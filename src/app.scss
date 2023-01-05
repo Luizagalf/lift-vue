@@ -1,4 +1,4 @@
-@import "src/assets/main.scss";
+@import "src/assets/colors.scss";
 
 .app {
   display: flex;
@@ -17,24 +17,28 @@
 .lifts {
   position: absolute;
   display: flex;
+  gap: 10px;
   border: 2px solid #00457e;
-  height: 400px;
+  left: 60px;
 
   & > li {
     border-left: 2px solid #00457e;
-    border-bottom: none;
+    border-right: 2px solid #00457e;
   }
 
   & > li:first-child {
     border-left: none;
   }
+
+  & > li:last-child {
+    border-right: none;
+  }
 }
 
 .buttons {
+  width: 100%;
+
   & > li:last-child {
     border: none;
-  }
-  & > li {
-    border-bottom: 1px solid $darkBlue;
   }
 }

@@ -1,24 +1,22 @@
-# lift
+# Description
 
-## Project setup
-```
-npm install
-```
+Elevator Emulator with localStorage
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+- Calling the elevator from different floors
+- Saving state in localStorage
 
-### Compiles and minifies for production
-```
-npm run build
-```
+# Technologies:
 
-### Lints and fixes files
-```
-npm run lint
-```
+- Vue
+- Typescript
+- Sass
+- Eslint, prettier
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# To start the project, you need to run next commands:
+
+- `npm i`
+- `npm run serve`
+
+# My contacts:
+
+Galyautdinova Luiza, luizagalf@gmail.com
