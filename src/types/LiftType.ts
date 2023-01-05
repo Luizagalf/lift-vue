@@ -1,1 +1,6 @@
-export type LiftType = { id: number; floor: number; active: boolean };
+export type LiftType = {
+  id: string;
+  floor: number;
+  active: boolean;
+  state: boolean;
+};

@@ -1,1 +1,1 @@
-export type BtnType = { id: number; name: number; active: boolean };
+export type BtnType = { id: string; name: number; active: boolean };
