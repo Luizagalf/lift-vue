@@ -21,6 +21,7 @@ export default defineComponent({
   },
   setup(props) {
     let positionY = 320;
+    let floor = 1;
 
     const createLift = (): void => {
       let canvas = document.getElementById(
@@ -35,28 +36,26 @@ export default defineComponent({
       ctx.fill();
     };
 
-    const stopLift = (
-      topPosition: number,
-      bottomPosition: number,
-      startLift: number
-    ): void => {
-      if (positionY > topPosition) {
-        positionY--;
-      }
-      if (positionY < bottomPosition) {
-        positionY++;
-      }
+    const moveLift = (position: number, direction: string): void => {
+      let startLift = setInterval(() => {
+        createLift();
+        if (direction === "up") {
+          positionY--;
+        } else {
+          positionY++;
+        }
 
-      console.log(positionY, topPosition, bottomPosition);
-
-      if (positionY === topPosition || positionY === bottomPosition) {
-        clearInterval(startLift);
-        props.setActiveLiftState(props.liftData.id);
-        props.setLiftState(props.liftData.id);
-        setTimeout(() => {
+        if (positionY === position) {
+          clearInterval(startLift);
+          props.setActiveLiftState(props.liftData.id);
           props.setLiftState(props.liftData.id);
-        }, 3000);
-      }
+          floor = props.liftData.floor;
+
+          setTimeout(() => {
+            props.setLiftState(props.liftData.id);
+          }, 3000);
+        }
+      });
     };
 
     onMounted(() => {
@@ -66,29 +65,42 @@ export default defineComponent({
     watch(
       () => props.liftData.active,
       () => {
-        if (props.liftData.active) {
-          let startLift = setInterval(() => {
-            createLift();
-
-            switch (props.liftData.floor) {
-              case 2:
-                stopLift(240, 160, startLift);
-                break;
-              case 3:
-                stopLift(159, 80, startLift);
-                break;
-              case 4:
-                stopLift(78, 0, startLift);
-                break;
-              case 5:
-                stopLift(-3, -80, startLift);
-                break;
-              case 1:
-              default:
-                stopLift(321, 321, startLift);
-                break;
-            }
-          }, 10);
+        if (props.liftData.active && floor !== props.liftData.floor) {
+          switch (props.liftData.floor) {
+            case 2:
+              if (floor > props.liftData.floor) {
+                moveLift(242, "down");
+              } else {
+                moveLift(240, "up");
+              }
+              break;
+            case 3:
+              if (floor > props.liftData.floor) {
+                moveLift(161, "down");
+              } else {
+                moveLift(159, "up");
+              }
+              break;
+            case 4:
+              if (floor > props.liftData.floor) {
+                moveLift(80, "down");
+              } else {
+                moveLift(78, "up");
+              }
+              break;
+            case 5:
+              if (floor > props.liftData.floor) {
+                moveLift(0, "down");
+              } else {
+                moveLift(-2, "up");
+              }
+              break;
+            case 1:
+            default:
+              if (floor > props.liftData.floor) {
+                moveLift(322, "down");
+              }
+          }
         }
       }
     );

@@ -22,6 +22,7 @@ import Lift from "@/components/Lift/Lift.vue";
 import Button from "@/components/Button/Button.vue";
 import { BtnType } from "@/types/BtnType";
 import { LiftType } from "@/types/LiftType";
+import { CallType } from "@/types/CallType";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -44,22 +45,32 @@ export default defineComponent({
         { id: "12", name: 3, active: false },
         { id: "11", name: 2, active: false },
         { id: "10", name: 1, active: false }
-      ] as BtnType[]
+      ] as BtnType[],
+      calls: [] as CallType[]
     };
   },
   methods: {
     setActiveBtnState(id: string): void {
       for (const button of this.buttons) {
         if (button.id === id) {
-          button.active = !button.active;
-          if (button.active) {
-            for (const lift of this.lifts) {
-              if (!lift.active && !lift.state) {
-                lift.active = true;
-                lift.floor = button.name;
-                break;
-              }
+          let newCall = true;
+
+          for (const call of this.calls) {
+            if (call.floor === button.name) {
+              newCall = false;
             }
+          }
+
+          for (const lift of this.lifts) {
+            if (lift.floor === button.name) {
+              newCall = false;
+            }
+          }
+
+          if (newCall) {
+            this.calls.push({ floor: button.name, active: true });
+            button.active = true;
+            this.takeNewCall();
           }
           break;
         }
@@ -85,6 +96,20 @@ export default defineComponent({
       for (const lift of this.lifts) {
         if (lift.id === id) {
           lift.state = !lift.state;
+          this.takeNewCall();
+
+          break;
+        }
+      }
+    },
+
+    takeNewCall(): void {
+      for (const lift of this.lifts) {
+        if (!lift.state && !lift.active && this.calls.length) {
+          lift.active = true;
+          lift.floor = this.calls[0].floor;
+          this.calls.shift();
+
           break;
         }
       }
